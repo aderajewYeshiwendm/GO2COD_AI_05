@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Calculator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        function validateInput() {
+            const inputField = document.getElementById("expression");
+            const submitButton = document.querySelector("button[type='submit']");
+            const validPattern = /^[0-9+\-*/() ]*$/; // Regex for valid calculator input
+            
+            // Enable button only if input matches the pattern and is not empty
+            if (inputField.value.trim() !== "" && validPattern.test(inputField.value)) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const inputField = document.getElementById("expression");
+            const submitButton = document.querySelector("button[type='submit']");
+            
+            // Disable the button initially
+            submitButton.disabled = true;
+            
+            // Add event listener to validate input on every change
+            inputField.addEventListener("input", validateInput);
+        });
+    </script>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Smart Calculator</h1>
+        <form action="/calculate" method="post">
+            <input 
+                type="text" 
+                name="expression" 
+                id="expression" 
+                placeholder="Enter your calculation"
+            >
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="result">
+            {% if result is not none %}
+                <p>Result: {{ result }}</p>
+            {% endif %}
+        </div>
+        <div id="suggestion">
+            {% if suggestion %}
+                <p>Suggestion: {{ suggestion }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
